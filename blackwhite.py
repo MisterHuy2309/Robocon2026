@@ -2,7 +2,7 @@ import cv2
 import os
 
 # Thư mục chứa ảnh gốc
-input_dir = r"D:\Desktop\Xulyanh\catanh"
+input_dir = r"D:\Bao_Khang"
 
 # Thư mục lưu ảnh trắng đen (tách biệt)
 output_dir = input_dir + "_gray"

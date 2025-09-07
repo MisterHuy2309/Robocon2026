@@ -1,7 +1,7 @@
 import os
 
 # Thư mục chứa ảnh cần đổi tên
-folder = r"D:\Desktop\Xulyanh\catanh"
+folder = r"D:\Desktop\Xulyanh\images_augmented"
 
 # Lấy danh sách file ảnh
 files = [f for f in os.listdir(folder) if f.lower().endswith((".jpg", ".png", ".jpeg", ".bmp"))]
@@ -10,7 +10,7 @@ files = [f for f in os.listdir(folder) if f.lower().endswith((".jpg", ".png", ".
 files.sort()
 
 # Điểm bắt đầu (ví dụ từ 78)
-start_num = 78
+start_num = 1
 
 # Đổi tên lần lượt
 for i, filename in enumerate(files, start=start_num):
