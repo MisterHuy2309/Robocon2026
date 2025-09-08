@@ -1,0 +1,5 @@
+classes = 2
+train = /content/yolov4tiny/data/train.txt
+valid = /content/yolov4tiny/data/test.txt
+names = /content/yolov4tiny/obj.names
+backup = /content/yolov4tiny/backup/

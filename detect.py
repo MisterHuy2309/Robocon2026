@@ -2,20 +2,30 @@ from ultralytics import YOLO
 import cv2
 from collections import defaultdict, deque
 import numpy as np
+import time
 
 # Load model
 model = YOLO("best.pt")
 
 # Mở webcam
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(1)
 
 # Lưu lịch sử box theo từng ID box để làm mượt
 history = defaultdict(lambda: deque(maxlen=5))
+
+# Biến đo FPS
+prev_time = 0
+fps = 0
 
 while True:
     ret, frame = cap.read()
     if not ret:
         break
+
+    # Đo FPS
+    curr_time = time.time()
+    fps = 1 / (curr_time - prev_time) if prev_time > 0 else 0
+    prev_time = curr_time
 
     # Detect
     results = model.predict(frame, imgsz=640, conf=0.6, verbose=False)
@@ -50,7 +60,11 @@ while True:
         # Không phát hiện gì
         print("0")
 
-    # Hiển thị
+    # Hiển thị FPS lên màn hình
+    cv2.putText(annotated_frame, f"FPS: {fps:.2f}", (10, 30),
+                cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 0), 2)
+
+    # Hiển thị frame
     cv2.imshow("YOLO Detection (Multi Real/Fake)", annotated_frame)
     if cv2.waitKey(1) & 0xFF == ord("q"):
         break
