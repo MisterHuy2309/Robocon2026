@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+import time
 
 # Đường dẫn file
 cfg_path = "yolov4-tiny-custom-fix.cfg"          # file cfg bạn đã train
@@ -22,11 +23,16 @@ output_layers = [layer_names[i - 1] for i in net.getUnconnectedOutLayers()]
 # Mở webcam (0 = camera mặc định)
 cap = cv2.VideoCapture(0)
 
+# Biến đếm frame và tính FPS
+frame_count = 0
+start_time = time.time()
+
 while True:
     ret, frame = cap.read()
     if not ret:
         break
 
+    frame_count += 1
     height, width = frame.shape[:2]
 
     # Tiền xử lý ảnh
@@ -66,6 +72,17 @@ while True:
             cv2.putText(frame, f"{label} {confidence:.2f}", (x, y - 5),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
 
+    # Tính FPS
+    elapsed_time = time.time() - start_time
+    fps = frame_count / elapsed_time if elapsed_time > 0 else 0
+
+    # Hiển thị FPS + Frame count
+    cv2.putText(frame, f"FPS: {fps:.2f}", (10, 25),
+                cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
+    cv2.putText(frame, f"Frame: {frame_count}", (10, 55),
+                cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 0, 0), 2)
+
+    # Hiển thị kết quả
     cv2.imshow("YOLOv4-tiny Webcam", frame)
 
     if cv2.waitKey(1) & 0xFF == ord('q'):  # nhấn 'q' để thoát
